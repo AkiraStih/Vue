@@ -1,13 +1,12 @@
 <script setup>
 import Button from "./components/Button.vue";
-let  b = "Контент";
-let color = "red";
+import Inputc from "./components/Inputc.vue";
 </script>
 
 <template>
-  <header :class="color">Лого</header>
-  <main>{{b}}
-    <Button>Сохранить</Button>
+  <header></header>
+  <main>
+    <Inputc/>
   </main>
 
   <footer>Подвал</footer>
