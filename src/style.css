@@ -1,0 +1,17 @@
+:root {
+  --color-primary: white;
+  --color-bg: #343D4B;
+  --color-primary-inverted: black;
+  --color-card-bg:#272E37;
+  --color-bg-main:#222831;
+  --gradient:linear-gradient(90.8deg, rgba(144, 217, 224, 0.9) 0.2%, rgba(84, 96, 230, 0.9) 100%);
+  --gradinent-inverted:linear-gradient(256.33deg, rgba(144, 217, 224, 0.9) 9.04%, rgba(84, 96, 230, 0.9) 92.2%);
+  --font:"Montserrat", sans-serif;
+}
+
+
+body{
+  font-family: var(--font);
+  color: var(--color-primary);
+  background-color: var(--color-bg);
+}
