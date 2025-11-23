@@ -1,12 +1,11 @@
 <script setup>
-import Button from "./components/Button.vue";
-import Inputc from "./components/Inputc.vue";
+import Inputhometask from "./components/Inputhometask.vue";
 </script>
 
 <template>
   <header></header>
   <main>
-    <Inputc/>
+    <Inputhometask/>
   </main>
 
   <footer>Подвал</footer>
