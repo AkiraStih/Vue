@@ -1,11 +1,11 @@
 <script setup>
-import Inputhometask from "./components/Inputhometask.vue";
+import Button from './components/Button.vue';
 </script>
 
 <template>
   <header></header>
   <main>
-    <Inputhometask/>
+    <Button>Мяу</Button>
   </main>
 
   <footer>Подвал</footer>
