@@ -1,0 +1,22 @@
+meta {
+  name: GetForecast
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://api.weatherapi.com/v1 /forecast.json?key=26c6abc649f249a8bca222157251712&q=Лондон&days=3&lang=ru
+  body: none
+  auth: inherit
+}
+
+params:query {
+  key: 26c6abc649f249a8bca222157251712
+  q: Лондон
+  days: 3
+  lang: ru
+}
+
+settings {
+  encodeUrl: true
+}
