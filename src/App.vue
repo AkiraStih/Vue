@@ -3,15 +3,12 @@ import CityCelect from './components/CityCelect.vue';
 import Error from './components/Error.vue';
 import Stat from './components/Stat.vue';
 import { computed, ref } from 'vue';
-import IconSun from './icons/weather/IconSun.vue';
-import IconCloud from './icons/weather/IconCloud.vue';
-import IconRain from './icons/weather/IconRain.vue';
-
+import DayCard from './components/DayCard.vue';
 
 const API_ENDPOINT = "http://api.weatherapi.com/v1";
 
 const errorMap = new Map([
-  [1006,"Указаный город не найден"]
+  [1006, "Указаный город не найден"]
 ])
 
 const data = ref()
@@ -72,10 +69,19 @@ async function getCity(city) {
 <template>
   <main class="main">
     <Error :error="errorDisplay" />
-    <IconSun color="red"  size="54"/>
-    <IconCloud />
-    <IconRain />
-    <Stat v-for="item in dataModified" v-bind="item" :key="item.label"></Stat>
+    <div v-if="data" class="day-stat">
+      <div>
+      <Stat v-for="item in dataModified" v-bind="item" :key="item.label" />
+      </div>
+      <div class="day-card-list">
+        <DayCard 
+        v-for="item in data.forecast.forecastday" 
+        :key="item.date" 
+        :weather-code="item.day.condition.code"
+        :temp="item.day.avgtemp_c"
+        :date="new Date(item.date)" />
+      </div>
+    </div>
     <CityCelect @select-city="getCity" />
   </main>
 </template>
@@ -85,5 +91,14 @@ async function getCity(city) {
   background-color: var(--color-bg-main);
   padding: 60px 50px;
   border-radius: 25px;
+}
+.day-card-list{
+  display: flex;
+}
+.day-stat{
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  margin-bottom: 70px;
 }
 </style>
