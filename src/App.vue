@@ -68,6 +68,8 @@ async function getCity(city) {
 
 <template>
   <main class="main">
+    <div class="left"></div>
+      <div class="right">
     <Error :error="errorDisplay" />
     <div v-if="data" class="day-stat">
       <div>
@@ -86,11 +88,26 @@ async function getCity(city) {
       </div>
     </div>
     <CityCelect @select-city="getCity" />
+  </div>
   </main>
+
 </template>
 
 <style scoped>
 .main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.left {
+  width: 500px;
+  height: 660px;
+  border-radius: 30px;
+  background-image: url('/public/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.right {
   background-color: var(--color-bg-main);
   padding: 60px 50px;
   border-radius: 25px;
