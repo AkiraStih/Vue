@@ -2,7 +2,7 @@
 <script setup>
 import Button from "./Button.vue";
 import IconLocation from "../icons/IconLocation.vue";
-import { onMounted, ref } from "vue";
+import { inject, onMounted, ref } from "vue";
 import Input from "./Input.vue";
 const emit = defineEmits(["selectCity"]);
 
@@ -21,6 +21,8 @@ function select() {
 function edit() {
   isEdit.value = true;
 }
+
+console.log(inject("num"))
 
 </script>
 

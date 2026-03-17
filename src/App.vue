@@ -1,96 +1,45 @@
 <script setup>
-import CityCelect from './components/CityCelect.vue';
-import Error from './components/Error.vue';
-import Stat from './components/Stat.vue';
-import { computed, ref } from 'vue';
-import DayCard from './components/DayCard.vue';
+import { ref, provide} from "vue";
+import PaneRight from "./components/PaneRight.vue";
 
 const API_ENDPOINT = "http://api.weatherapi.com/v1";
 
-const errorMap = new Map([
-  [1006, "Указаный город не найден"]
-])
-
-let data = ref()
-let error = ref()
-let activeIndex = ref(0)
-
-const errorDisplay = computed(() => {
-  return errorMap.get(error?.value?.error?.code)
-})
-
-
-const dataModified = computed(() => {
-  if (!data.value) {
-    return []
-  }
-  return [
-
-
-    {
-      label: "Влажность",
-      stat: `${data.value.current.humidity}%`,
-    },
-
-    {
-      label: "Облачность",
-      stat: `${data.value.current.cloud}%`,
-    },
-
-    {
-      label: "Ветер",
-      stat: `${data.value.current.wind_kph}км/ч`,
-    },
-
-  ]
-})
-
+let data = ref();
+let error = ref();
+let activeIndex = ref(0);
+provide("num", 1)
 async function getCity(city) {
   const params = new URLSearchParams({
     q: city,
     days: 3,
     lang: "ru",
-    key: "26c6abc649f249a8bca222157251712"
-  })
-  const res = await fetch(`${API_ENDPOINT}/forecast.json?${params.toString()}`)
+    key: "26c6abc649f249a8bca222157251712",
+  });
+  const res = await fetch(`${API_ENDPOINT}/forecast.json?${params.toString()}`);
 
   if (res.status != 200) {
-    error.value = await res.json()
-    data.value = null
-    return
+    error.value = await res.json();
+    data.value = null;
+    return;
   }
-  error.value = null
-  data.value = await res.json()
-
+  error.value = null;
+  data.value = await res.json();
 }
 </script>
-
 
 <template>
   <main class="main">
     <div class="left"></div>
-      <div class="right">
-    <Error :error="errorDisplay" />
-    <div v-if="data" class="day-stat">
-      <div>
-      <Stat v-for="item in dataModified" v-bind="item" :key="item.label" />
-      </div>
-      <div class="day-card-list">
-        <DayCard 
-        v-for="(item, index) in data.forecast.forecastday" 
-        :key="item.date" 
-        :weather-code="item.day.condition.code"
-        :temp="item.day.avgtemp_c"
-        :date="new Date(item.date)"
-        :is-active="activeIndex == index"
-        @click="() => (activeIndex = index)"
-        />
-      </div>
+    <div class="right">
+      <PaneRight
+        :data
+        :error
+        :active-index="activeIndex"
+        @select-index="(i) => (activeIndex = i)"
+        @select-city="getCity"
+      />
     </div>
-    <CityCelect @select-city="getCity" />
-  </div>
   </main>
-
 </template>
 
 <style scoped>
@@ -103,7 +52,7 @@ async function getCity(city) {
   width: 500px;
   height: 660px;
   border-radius: 30px;
-  background-image: url('/public/bg.png');
+  background-image: url("/public/bg.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -112,13 +61,5 @@ async function getCity(city) {
   padding: 60px 50px;
   border-radius: 25px;
 }
-.day-card-list{
-  display: flex;
-}
-.day-stat{
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-  margin-bottom: 70px;
-}
+
 </style>
