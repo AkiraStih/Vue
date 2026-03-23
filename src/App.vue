@@ -1,13 +1,24 @@
 <script setup>
-import { ref, provide} from "vue";
+import { ref, provide, watch, onMounted} from "vue";
 import PaneRight from "./components/PaneRight.vue";
+import { API_ENDPOINT, cityProvide } from "./constants";
+import PaneLeft from "./components/PaneLeft.vue";
 
-const API_ENDPOINT = "http://api.weatherapi.com/v1";
 
 let data = ref();
 let error = ref();
 let activeIndex = ref(0);
-provide("num", 1)
+let city = ref("Moscow");
+
+provide(cityProvide, city)
+
+watch(city, () => {
+  getCity(city.value);
+})
+
+onMounted(() => {
+  getCity(city.value);
+})
 async function getCity(city) {
   const params = new URLSearchParams({
     q: city,
@@ -29,14 +40,15 @@ async function getCity(city) {
 
 <template>
   <main class="main">
-    <div class="left"></div>
+    <div class="left">
+      <PaneLeft v-if="data" :day-data="data.forecast.forecastday[activeIndex]"/>
+    </div>
     <div class="right">
       <PaneRight
         :data
         :error
         :active-index="activeIndex"
-        @select-index="(i) => (activeIndex = i)"
-        @select-city="getCity"
+        @select-index="(index) => (activeIndex = index)"
       />
     </div>
   </main>

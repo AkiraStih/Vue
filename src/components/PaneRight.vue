@@ -4,15 +4,15 @@ import DayCard from "./DayCard.vue";
 import CityCelect from "./CityCelect.vue";
 import Stat from "./Stat.vue";
 import { computed } from "vue";
+import { errorMap } from "../constants";
 const { error, data, activeIndex } = defineProps({
   error: Object,
   data: Object,
   activeIndex: Number,
 });
 
-const emit = defineEmits(["select-index", "select-city"]);
+const emit = defineEmits(["select-index"]);
 
-const errorMap = new Map([[1006, "Указаный город не найден"]]);
 
 const statData = computed(() => {
   if (!data) {
@@ -21,17 +21,17 @@ const statData = computed(() => {
   return [
     {
       label: "Влажность",
-      stat: `${data.current.humidity}%`,
+      stat: `${data.forecast.forecastday[activeIndex].day.avghumidity}%`,
     },
 
     {
-      label: "Облачность",
-      stat: `${data.current.cloud}%`,
+      label: "Вероятность дождя",
+      stat: `${data.forecast.forecastday[activeIndex].day.daily_chance_of_rain}%`,
     },
 
     {
       label: "Ветер",
-      stat: `${data.current.wind_kph}км/ч`,
+      stat: `${data.forecast.forecastday[activeIndex].day.avgvis_km}км/ч`,
     },
   ];
 });
@@ -56,11 +56,11 @@ const errorDisplay = computed(() => {
           :temp="item.day.avgtemp_c"
           :date="new Date(item.date)"
           :is-active="activeIndex == index"
-          @click="() => emit('select-index', i)"
+          @click="() => emit('select-index', index)"
         />
       </div>
     </div>
-    <CityCelect @select-city="(city) => emit('select-city', city)" />
+    <CityCelect/>
   </div>
 </template>
 
